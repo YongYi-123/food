@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>🍱 食物保存追蹤器</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script>
+    function toggleInput(type) {
+      document.getElementById('days-input').style.display = (type === 'days') ? 'block' : 'none';
+      document.getElementById('expire-input').style.display = (type === 'expire') ? 'block' : 'none';
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>🍱 食物保存追蹤器</h1>
+    <form method="post" class="food-form">
+      <input name="name" placeholder="食物名稱" required>
+      <input type="date" name="date" required>
+
+      <div>
+        <label><input type="radio" name="input_type" onclick="toggleInput('days')" checked> 用保存天數</label>
+        <label><input type="radio" name="input_type" onclick="toggleInput('expire')"> 直接輸入到期日</label>
+      </div>
+
+      <div id="days-input">
+        <input name="days" type="number" placeholder="保存天數">
+      </div>
+
+      <div id="expire-input" style="display: none;">
+        <input type="date" name="expire_date" placeholder="到期日">
+      </div>
+
+      <button type="submit">新增食物</button>
+    </form>
+
+    <ul class="food-list">
+      {% for food in foods %}
+        <li style="color: {{ food.color }}">
+          <strong>{{ food.name }}</strong>｜放入日: {{ food.date }}｜{{ food.status }}
+          <a href="/delete/{{ food.id }}" style="color: gray; margin-left: 10px;">🗑 刪除</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+</body>
+</html>

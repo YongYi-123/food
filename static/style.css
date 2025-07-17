@@ -1,0 +1,54 @@
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8ff;
+  color: #333;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.food-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.food-form input, .food-form button {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.food-form button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.food-form button:hover {
+  background-color: #45a049;
+}
+
+.food-list {
+  list-style: none;
+  padding: 0;
+}
+
+.food-list li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
