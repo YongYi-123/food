@@ -2,6 +2,7 @@ import streamlit as st
 from datetime import datetime, timedelta
 import json
 import os
+import subprocess
 
 DATA_FILE = 'food.json'
 
@@ -16,6 +17,15 @@ def save_food(data):
     with open(DATA_FILE, 'w') as f:
         json.dump(data, f)
 
+def push_to_github():
+    try:
+        subprocess.run(["git", "add", "food.json"], check=True)
+        subprocess.run(["git", "commit", "-m", "Update food.json via Streamlit"], check=True)
+        subprocess.run(["git", "push"], check=True)
+        st.info("✅ 已同步至 GitHub")
+    except Exception as e:
+        st.warning(f"⚠️ Git push 失敗：{e}")
+
 # === 頁面基本設定 ===
 st.set_page_config(page_title="食物保存追蹤", layout="centered")
 st.title("🥫 食物保存追蹤器")
@@ -26,7 +36,6 @@ with st.form("add_food_form"):
     purchase_date = st.date_input("購買日期", value=datetime.today())
 
     input_method = st.radio("選擇輸入方式", ["保存天數", "輸入到期日"])
-
     expire_date = None
 
     if input_method == "保存天數":
@@ -51,6 +60,7 @@ with st.form("add_food_form"):
                 "expire_date": expire_date.strftime("%Y-%m-%d")
             })
             save_food(food)
+            push_to_github()  # ⬅️ 自動同步
             st.success(f"✅ 新增 {name} 成功！")
             st.rerun()
 
@@ -79,4 +89,5 @@ else:
             if st.button("🗑️ 刪除", key=item["id"]):
                 food_list = [f for f in food_list if f["id"] != item["id"]]
                 save_food(food_list)
+                push_to_github()  # ⬅️ 同步刪除也 push
                 st.rerun()
