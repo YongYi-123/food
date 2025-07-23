@@ -1,0 +1,27 @@
+name: Daily Reminder
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天 00:00 UTC（= 台灣早上 8:00）
+  workflow_dispatch:     # 可手動觸發（從 GitHub 點按鈕）
+
+jobs:
+  run-reminder:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Run reminder script
+        env:
+          EMAIL: ${{ secrets.EMAIL }}
+          TO: ${{ secrets.TO }}
+          APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+        run: |
+          python reminder.py
